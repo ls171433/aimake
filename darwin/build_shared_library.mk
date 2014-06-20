@@ -1,3 +1,4 @@
-LDFLAGS := -shared $(LDFLAGS)
+LDFLAGS := -dynamiclib -shared $(LDFLAGS)
 
 ALL = $(SHARED_LIBRARY)
+include $(BUILD_ALL)
