@@ -5,7 +5,7 @@ $(shell sleep 1)
 
 ifeq ($(MINGWABI), i686)
 
-    TOOLCHAINS = /mingw/toolchains/i686-w64-mingw32-gcc-4.8.0-win64_rubenvb/mingw32
+    TOOLCHAINS = /mingw32
 
     CC  = $(TOOLCHAINS)/bin/i686-w64-mingw32-gcc
     LD  = $(TOOLCHAINS)/bin/i686-w64-mingw32-ld  
@@ -14,14 +14,14 @@ ifeq ($(MINGWABI), i686)
     AR  = $(TOOLCHAINS)/bin/i686-w64-mingw32-ar
     AS  = $(TOOLCHAINS)/bin/i686-w64-mingw32-as
     NM  = $(TOOLCHAINS)/bin/i686-w64-mingw32-nm
-    STRIP = $(TOOLCHAINS)/bin/i686-w64-mingw32-strip
-    WINDRES = $(TOOLCHAINS)/bin/i686-w64-mingw32-windres
+    STRIP = $(TOOLCHAINS)/i686-w64-mingw32/bin/strip
+    WINDRES = $(TOOLCHAINS)/bin/windres
 
     CFLAGS = -I $(TOOLCHAINS)/i686-w64-mingw32/include
 
 else ifeq ($(MINGWABI), x86_64)
 
-    TOOLCHAINS = /mingw/toolchains/x86_64-w64-mingw32-gcc-4.8.0-win64_rubenvb/mingw64
+    TOOLCHAINS = /mingw64
 
     CC  = $(TOOLCHAINS)/bin/gcc
     LD  = $(TOOLCHAINS)/bin/ld  

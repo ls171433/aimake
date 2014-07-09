@@ -7,6 +7,6 @@ AS  = as
 NM  = nm
 STRIP = strip
 
-CFLAGS   := -D RUSAGE_THREAD=0 #-fPIC -pipe
+CFLAGS   := -D __APPLE__ -D RUSAGE_THREAD=0 #-fPIC -pipe
 CXXFLAGS := $(CFLAGS)
 LDFLAGS := -lstdc++ 
