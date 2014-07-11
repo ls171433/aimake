@@ -8,13 +8,13 @@ ifeq ($(MINGWABI), i686)
     TOOLCHAINS = /mingw32
 
     CC  = $(TOOLCHAINS)/bin/i686-w64-mingw32-gcc
-    LD  = $(TOOLCHAINS)/bin/i686-w64-mingw32-ld  
+    LD  = $(TOOLCHAINS)/bin/i686-w64-mingw32-ld
     CPP = $(TOOLCHAINS)/bin/i686-w64-mingw32-cpp
     CXX = $(TOOLCHAINS)/bin/i686-w64-mingw32-g++
-    AR  = $(TOOLCHAINS)/bin/i686-w64-mingw32-ar
-    AS  = $(TOOLCHAINS)/bin/i686-w64-mingw32-as
-    NM  = $(TOOLCHAINS)/bin/i686-w64-mingw32-nm
-    STRIP = $(TOOLCHAINS)/i686-w64-mingw32/bin/strip
+    AR  = $(TOOLCHAINS)/bin/i686-w64-mingw32-gcc-ar
+    AS  = $(TOOLCHAINS)/bin/as
+    NM  = $(TOOLCHAINS)/bin/i686-w64-mingw32-gcc-nm
+    STRIP = $(TOOLCHAINS)/bin/strip
     WINDRES = $(TOOLCHAINS)/bin/windres
 
     CFLAGS = -I $(TOOLCHAINS)/i686-w64-mingw32/include
