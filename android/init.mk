@@ -2,9 +2,9 @@
 # android ndk configuration
 #
 ANDROID_NDK_HOME = /usr/local/android-ndk
-TOOLCHAINS = $(ANDROID_NDK_HOME)/toolchains/arm-linux-androideabi-4.4.3/prebuilt/linux-x86
+TOOLCHAINS = $(ANDROID_NDK_HOME)/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86_64
 PLATFORM = $(ANDROID_NDK_HOME)/platforms/android-8/arch-arm
-CXX_STL = $(ANDROID_NDK_HOME)/sources/cxx-stl/gnu-libstdc++
+CXX_STL = $(ANDROID_NDK_HOME)/sources/cxx-stl/gnu-libstdc++/4.6
 
 CC  = $(TOOLCHAINS)/bin/arm-linux-androideabi-gcc
 LD  = $(TOOLCHAINS)/bin/arm-linux-androideabi-ld
