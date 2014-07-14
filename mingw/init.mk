@@ -11,7 +11,7 @@ ifeq ($(MINGWABI), i686)
     LD  = $(TOOLCHAINS)/bin/i686-w64-mingw32-ld
     CPP = $(TOOLCHAINS)/bin/i686-w64-mingw32-cpp
     CXX = $(TOOLCHAINS)/bin/i686-w64-mingw32-g++
-    AR  = $(TOOLCHAINS)/bin/i686-w64-mingw32-gcc-ar
+    AR  = $(TOOLCHAINS)/bin/ar
     AS  = $(TOOLCHAINS)/bin/as
     NM  = $(TOOLCHAINS)/bin/i686-w64-mingw32-gcc-nm
     STRIP = $(TOOLCHAINS)/bin/strip
