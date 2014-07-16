@@ -7,7 +7,7 @@ AS  = as
 NM  = nm
 STRIP = strip
 
-CFLAGS   := #-fPIC -pipe
+CFLAGS   := -D __LINUX__ #-fPIC -pipe
 CXXFLAGS := $(CFLAGS)
 LDFLAGS :=
 
