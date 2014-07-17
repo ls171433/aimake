@@ -40,56 +40,6 @@ SHARED_LIBRARY_I386   = lib$(LOCAL_MODULE).i386.dylib
 
 PACKAGE  = $(LOCAL_MODULE)-$(TARGET_PLATFORM)-$(VERSION)-$(TIMESTAMP).tar.gz
 
-#
-# explict rules
-#
-%.armv7.o : %.c
-	$(CC_DEV) $(LOCAL_CFLAGS) $(CFLAGS_ARMV7) -c $< -o $@
-
-%.armv7s.o : %.c
-	$(CC_DEV) $(LOCAL_CFLAGS) $(CFLAGS_ARMV7S) -c $< -o $@
-
-%.armv8.o : %.c
-	$(CC_DEV) $(LOCAL_CFLAGS) $(CFLAGS_ARMV8) -c $< -o $@
-
-%.i386.o  : %.c
-	$(CC_SIM) $(LOCAL_CFLAGS) $(CFLAGS_I386)  -c $< -o $@
-
-%.armv7.o : %.cc
-	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV7) -c $< -o $@
-
-%.armv7s.o : %.cc
-	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV7S) -c $< -o $@
-
-%.armv8.o : %.cc
-	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV8) -c $< -o $@
-
-%.i386.o  : %.cc
-	$(CXX_SIM) $(LOCAL_CXXFLAGS) $(CXXFLAGS_I386)  -c $< -o $@
-
-%.armv7.o : %.cpp
-	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV7) -c $< -o $@
-
-%.armv7s.o : %.cpp
-	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV7S) -c $< -o $@
-
-%.armv8.o : %.cpp
-	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV8) -c $< -o $@
-
-%.i386.o  : %.cpp
-	$(CXX_SIM) $(LOCAL_CXXFLAGS) $(CXXFLAGS_I386)  -c $< -o $@
-
-%.armv7.o : %.m
-	$(CC_DEV) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_ARMV7)  -std=gnu99 -c $< -o $@
-
-%.armv7s.o : %.m
-	$(CC_DEV) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_ARMV7S) -std=gnu99 -c $< -o $@
-
-%.armv8.o : %.m
-	$(CC_DEV) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_ARMV8)  -std=gnu99 -c $< -o $@
-
-%.i386.o  : %.m
-	$(CC_SIM) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_I386)   -std=gnu99 -c $< -o $@
 
 #
 # goal: all
@@ -164,13 +114,18 @@ ifeq ($(findstring package,$(MAKECMDGOALS)),package)
     endif
 endif
 
+LOCAL_PACKAGE_RESOURCES += $(ALL)
+ifneq ($(LOCAL_PACKAGE_RESOURCES_EXCLUDE),)
+    LOCAL_PACKAGE_RESOURCES := $(filter-out $(LOCAL_PACKAGE_RESOURCES_EXCLUDE), $(LOCAL_PACKAGE_RESOURCES))
+endif
+
 PACKAGE_TEMP_DIR = $(PACKAGE:.tar.gz=)
 package: $(PACKAGE)
-$(PACKAGE): $(ALL)
+$(PACKAGE): $(LOCAL_PACKAGE_RESOURCES) 
 	@[ -e $(PACKAGE_TEMP_DIR) ] && echo "$(PACKAGE_TEMP_DIR) already exist, please delete it manually" && exit;\
 	rm -rf $(PACKAGE_TEMP_DIR);\
 	rm -rf $@;
 	mkdir -p $(PACKAGE_TEMP_DIR);
-	cp -Rf -L $(ALL) $(LOCAL_PACKAGE_RESOURCES) $(PACKAGE_TEMP_DIR);
+	cp -Rf -L $(LOCAL_PACKAGE_RESOURCES) $(PACKAGE_TEMP_DIR);
 	tar --exclude .svn -h -czf $@ $(PACKAGE_TEMP_DIR);
 	rm -rf $(PACKAGE_TEMP_DIR); 

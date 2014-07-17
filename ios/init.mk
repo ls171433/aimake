@@ -87,6 +87,9 @@ CXXFLAGS_I386 := $(CFLAGS_I386)
 %.armv7s.o : %.c
 	$(CC_DEV) $(LOCAL_CFLAGS) $(CFLAGS_ARMV7S) -c $< -o $@
 
+%.armv8.o : %.c
+	$(CC_DEV) $(LOCAL_CFLAGS) $(CFLAGS_ARMV8) -c $< -o $@
+
 %.i386.o  : %.c
 	$(CC_SIM) $(LOCAL_CFLAGS) $(CFLAGS_I386)  -c $< -o $@
 
@@ -95,6 +98,9 @@ CXXFLAGS_I386 := $(CFLAGS_I386)
 
 %.armv7s.o : %.cc
 	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV7S) -c $< -o $@
+
+%.armv8.o : %.cc
+	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV8) -c $< -o $@
 
 %.i386.o  : %.cc
 	$(CXX_SIM) $(LOCAL_CXXFLAGS) $(CXXFLAGS_I386)  -c $< -o $@
@@ -105,6 +111,9 @@ CXXFLAGS_I386 := $(CFLAGS_I386)
 %.armv7s.o : %.cpp
 	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV7S) -c $< -o $@
 
+%.armv8.o : %.cpp
+	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV8) -c $< -o $@
+
 %.i386.o  : %.cpp
 	$(CXX_SIM) $(LOCAL_CXXFLAGS) $(CXXFLAGS_I386)  -c $< -o $@
 
@@ -113,6 +122,9 @@ CXXFLAGS_I386 := $(CFLAGS_I386)
 
 %.armv7s.o : %.m
 	$(CC_DEV) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_ARMV7S) -std=gnu99 -c $< -o $@
+
+%.armv8.o : %.m
+	$(CC_DEV) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_ARMV8)  -std=gnu99 -c $< -o $@
 
 %.i386.o  : %.m
 	$(CC_SIM) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_I386)   -std=gnu99 -c $< -o $@
