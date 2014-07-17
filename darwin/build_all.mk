@@ -27,7 +27,7 @@ $(STATIC_LIBRARY) : $(OBJECTS)
 
 $(SHARED_LIBRARY) : $(OBJECTS)
 	$(CXX) $^ $(LDFLAGS) $(LOCAL_LDFLAGS) -o $@
-	$(STRIP) --strip-unneeded $@
+	#$(STRIP) --strip-unneeded $@
 
 
 #
