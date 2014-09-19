@@ -59,7 +59,7 @@ CXXFLAGS_ARMV7 = $(CFLAGS_ARMV7)
 CXXFLAGS_ARMV7S = $(CFLAGS_ARMV7S)
 CXXFLAGS_ARMV8 = $(CFLAGS_ARMV8)
 
-# simulator i386
+# simulator
 CC_SIM      = /Applications/Xcode.app/Contents/Developer/usr/bin/gcc #$(DEVROOT_SIM)/usr/bin/gcc
 LD_SIM      = /Applications/Xcode.app/Contents/Developer/usr/bin/ld #$(DEVROOT_SIM)/usr/bin/ld
 #CPP_SIM     = $(DEVROOT_SIM)/usr/bin/cpp
@@ -73,9 +73,11 @@ RANLIB_SIM  = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault
 CFLAGS_SIM  := -no-cpp-precomp -isysroot $(SDKROOT_SIM) -I$(SDKROOT_SIM)/usr/include  -D__IPHONE_OS__
 LDFLAGS_SIM := -L$(SDKROOT_SIM)/usr/lib -lstdc++
 
-CFLAGS_I386 := -arch i386 $(CFLAGS_SIM)
-
+CFLAGS_I386   := -arch i386 $(CFLAGS_SIM)
 CXXFLAGS_I386 := $(CFLAGS_I386)
+
+CFLAGS_X86_64   := -arch x86_64 $(CFLAGS_SIM)
+CXXFLAGS_X86_64 := $(CFLAGS_X86_64)
 
 
 #
@@ -91,7 +93,10 @@ CXXFLAGS_I386 := $(CFLAGS_I386)
 	$(CC_DEV) $(LOCAL_CFLAGS) $(CFLAGS_ARMV8) -c $< -o $@
 
 %.i386.o  : %.c
-	$(CC_SIM) $(LOCAL_CFLAGS) $(CFLAGS_I386)  -c $< -o $@
+	$(CC_SIM) $(LOCAL_CFLAGS) $(CFLAGS_I386) -c $< -o $@
+
+%.x86_64.o  : %.c
+	$(CC_SIM) $(LOCAL_CFLAGS) $(CFLAGS_X86_64) -c $< -o $@
 
 %.armv7.o : %.cc
 	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV7) -c $< -o $@
@@ -103,7 +108,10 @@ CXXFLAGS_I386 := $(CFLAGS_I386)
 	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV8) -c $< -o $@
 
 %.i386.o  : %.cc
-	$(CXX_SIM) $(LOCAL_CXXFLAGS) $(CXXFLAGS_I386)  -c $< -o $@
+	$(CXX_SIM) $(LOCAL_CXXFLAGS) $(CXXFLAGS_I386) -c $< -o $@
+
+%.x86_64.o  : %.cc
+	$(CXX_SIM) $(LOCAL_CXXFLAGS) $(CXXFLAGS_X86_64) -c $< -o $@
 
 %.armv7.o : %.cpp
 	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV7) -c $< -o $@
@@ -115,19 +123,25 @@ CXXFLAGS_I386 := $(CFLAGS_I386)
 	$(CXX_DEV) $(LOCAL_CXXFLAGS) $(CXXFLAGS_ARMV8) -c $< -o $@
 
 %.i386.o  : %.cpp
-	$(CXX_SIM) $(LOCAL_CXXFLAGS) $(CXXFLAGS_I386)  -c $< -o $@
+	$(CXX_SIM) $(LOCAL_CXXFLAGS) $(CXXFLAGS_I386) -c $< -o $@
+
+%.x86_64.o  : %.cpp
+	$(CXX_SIM) $(LOCAL_CXXFLAGS) $(CXXFLAGS_X86_64) -c $< -o $@
 
 %.armv7.o : %.m
-	$(CC_DEV) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_ARMV7)  -std=gnu99 -c $< -o $@
+	$(CC_DEV) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_ARMV7) -std=gnu99 -c $< -o $@
 
 %.armv7s.o : %.m
 	$(CC_DEV) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_ARMV7S) -std=gnu99 -c $< -o $@
 
 %.armv8.o : %.m
-	$(CC_DEV) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_ARMV8)  -std=gnu99 -c $< -o $@
+	$(CC_DEV) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_ARMV8) -std=gnu99 -c $< -o $@
 
 %.i386.o  : %.m
-	$(CC_SIM) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_I386)   -std=gnu99 -c $< -o $@
+	$(CC_SIM) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_I386) -std=gnu99 -c $< -o $@
+
+%.x86_64.o  : %.m
+	$(CC_SIM) -x objective-c -std=gnu99 -D__IPHONE_OS_VERSION_MIN_REQUIRED=30100 -fobjc-abi-version=2 -fobjc-legacy-dispatch $(LOCAL_CFLAGS) $(CFLAGS_X86_64) -std=gnu99 -c $< -o $@
 
 
 #
@@ -137,15 +151,18 @@ EXECUTABLE        = $(LOCAL_MODULE)
 EXECUTABLE_ARMV7  = $(LOCAL_MODULE).armv7
 EXECUTABLE_ARMV7S = $(LOCAL_MODULE).armv7s
 EXECUTABLE_I386   = $(LOCAL_MODULE).i386
+EXECUTABLE_X86_64 = $(LOCAL_MODULE).x86_64
 
 STATIC_LIBRARY        = lib$(LOCAL_MODULE).a
 STATIC_LIBRARY_ARMV7  = lib$(LOCAL_MODULE).armv7.a
 STATIC_LIBRARY_ARMV7S = lib$(LOCAL_MODULE).armv7s.a
 STATIC_LIBRARY_I386   = lib$(LOCAL_MODULE).i386.a
+STATIC_LIBRARY_X86_64 = lib$(LOCAL_MODULE).x86_64.a
 
 SHARED_LIBRARY        = lib$(LOCAL_MODULE).dylib
 SHARED_LIBRARY_ARMV7  = lib$(LOCAL_MODULE).armv7.dylib
 SHARED_LIBRARY_ARMV7S = lib$(LOCAL_MODULE).armv7s.dylib
 SHARED_LIBRARY_I386   = lib$(LOCAL_MODULE).i386.dylib
+SHARED_LIBRARY_X86_64 = lib$(LOCAL_MODULE).x86_64.dylib
 
 PACKAGE  = $(LOCAL_MODULE)-$(TARGET_PLATFORM)-$(VERSION)-$(TIMESTAMP).tar.gz
