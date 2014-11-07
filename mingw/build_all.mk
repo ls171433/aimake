@@ -22,9 +22,11 @@ all: $(ALL)
 
 $(EXECUTABLE) : $(OBJECTS)
 	$(CXX) $^ $(LOCAL_LDFLAGS) $(LDFLAGS) -o $@
+	$(STRIP) --strip-unneeded $@
 
 $(STATIC_LIBRARY) : $(OBJECTS)
 	$(AR) crv $@ $^
+	$(STRIP) --strip-unneeded $@
 
 #
 #	$(CXX) $^ $(LDFLAGS) $(LOCAL_LDFLAGS) -Wl,--kill-at -Wl,--output-def,$(LOCAL_MODULE).def,--out-implib,lib$(LOCAL_MODULE).a -o $(LOCAL_MODULE).dll

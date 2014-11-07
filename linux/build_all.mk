@@ -19,9 +19,11 @@ all: $(ALL)
 
 $(EXECUTABLE) : $(OBJECTS)
 	$(CXX) $^ $(LOCAL_LDFLAGS) $(LDFLAGS) -o $@
+	$(STRIP) --strip-unneeded $@
 
 $(STATIC_LIBRARY) : $(OBJECTS)
 	$(AR) crv $@ $^
+	$(STRIP) --strip-unneeded $@
 
 $(SHARED_LIBRARY) : $(OBJECTS)
 	$(CXX) $^ $(LDFLAGS) $(LOCAL_LDFLAGS) -o $@
