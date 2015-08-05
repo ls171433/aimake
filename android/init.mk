@@ -16,18 +16,22 @@ else ifeq ($(ANDABI), armv7a-vfpv3)
     CFLAGS := -march=armv7-a -marm -mfloat-abi=softfp -mfpu=vfpv3
 else ifeq ($(ANDABI), armv7a-neon)
     CFLAGS := -march=armv7-a -marm -mfloat-abi=softfp -mfpu=neon -ftree-vectorize
+else ifeq ($(ANDABI), aarch64)
+    CFLAGS := -march=armv8-a
 else ifeq ($(ANDABI), mips)
 else ifeq ($(ANDABI), i686)
-	CFLAGS :=  -march=atom -mtune=atom -msse3 
+    CFLAGS :=  -march=atom -mtune=atom -msse3
+else ifeq ($(ANDABI), x86_64)
+    CFLAGS :=  -march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=intel
 else
-    $(error only support ANDABI: armv5te, armv6-vfp, armv7a-vfpv3, armv7a-neon, mips, i686, the default is armv6-vfp)
+    $(error only support ANDABI: armv5te, armv6-vfp, armv7a-vfpv3, armv7a-neon, aarch64, mips, i686, x86_64, default is armv6-vfp)
 endif
 
 ifeq (arm, $(findstring arm, $(ANDABI)))
 
-    TOOLCHAINS = $(ANDROID_NDK_HOME)/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86_64
-    PLATFORM = $(ANDROID_NDK_HOME)/platforms/android-8/arch-arm
-    CXX_STL = $(ANDROID_NDK_HOME)/sources/cxx-stl/gnu-libstdc++/4.6
+    TOOLCHAINS = $(ANDROID_NDK_HOME)/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64
+    PLATFORM = $(ANDROID_NDK_HOME)/platforms/android-9/arch-arm
+    CXX_STL = $(ANDROID_NDK_HOME)/sources/cxx-stl/gnu-libstdc++/4.9
     
     CC  = $(TOOLCHAINS)/bin/arm-linux-androideabi-gcc
     LD  = $(TOOLCHAINS)/bin/arm-linux-androideabi-ld
@@ -54,11 +58,39 @@ ifeq (arm, $(findstring arm, $(ANDABI)))
 
     #LDFLAGS := -Wl,-z,nocopyreloc -Wl,--no-undefined -Wl,-z,noexecstack -Wl,--gc-sections --sysroot=$(PLATFORM) -L$(PLATFORM)/usr/lib -llog -lc -lsupc++ $(CXX_STL)/libs/armeabi/libstdc++.a $(TOOLCHAINS)/lib/gcc/arm-linux-androideabi/4.4.3/libgcc.a
 
+else ifeq (aarch64, $(findstring aarch64, $(ANDABI)))
+
+    TOOLCHAINS = $(ANDROID_NDK_HOME)/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64
+    PLATFORM = $(ANDROID_NDK_HOME)/platforms/android-21/arch-arm64
+    CXX_STL = $(ANDROID_NDK_HOME)/sources/cxx-stl/gnu-libstdc++/4.9
+    
+    CC  = $(TOOLCHAINS)/bin/aarch64-linux-android-gcc
+    LD  = $(TOOLCHAINS)/bin/aarch64-linux-android-ld
+    CPP = $(TOOLCHAINS)/bin/aarch64-linux-android-cpp
+    CXX = $(TOOLCHAINS)/bin/aarch64-linux-android-g++
+    AR  = $(TOOLCHAINS)/bin/aarch64-linux-android-ar
+    AS  = $(TOOLCHAINS)/bin/aarch64-linux-android-as
+    NM  = $(TOOLCHAINS)/bin/aarch64-linux-android-nm
+    STRIP = $(TOOLCHAINS)/bin/aarch64-linux-android-strip
+    
+    # optimize and debug flags should be set in 'aimakefile'
+    # -Os -O3 -DNDEBUG -g
+    # -fpic
+    # -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ 
+    # -ffunction-sections -funwind-tables -fstack-protector -Wno-psabi -fomit-frame-pointer -fno-strict-aliasing -finline-limit=300 -Wa,--noexecstack 
+    # -I$(ANDROID_NDK_HOME)/sources/android/cpufeatures
+    #
+    #
+    CFLAGS   += -fsigned-char -I$(PLATFORM)/usr/include 
+    CXXFLAGS := $(CFLAGS) -I $(CXX_STL)/include -I $(CXX_STL)/libs/arm64-v8a/include -I $(CXX_STL)/arm64-v8a-fexceptions -frtti
+    #-Wl,--fix-cortex-a8 -Wl,-z,nocopyreloc -Wl,--no-undefined -Wl,-z,noexecstack -Wl,--gc-sections 
+    LDFLAGS := --sysroot=$(PLATFORM) -L$(PLATFORM)/usr/lib -llog -lc $(CXX_STL)/libs/arm64-v8a/libgnustl_static.a
+
 else ifeq (mips, $(findstring mips, $(ANDABI)))
 
-    TOOLCHAINS = $(ANDROID_NDK_HOME)/toolchains/mipsel-linux-android-4.6/prebuilt/linux-x86_64
+    TOOLCHAINS = $(ANDROID_NDK_HOME)/toolchains/mipsel-linux-android-4.9/prebuilt/linux-x86_64
     PLATFORM = $(ANDROID_NDK_HOME)/platforms/android-9/arch-mips
-    CXX_STL = $(ANDROID_NDK_HOME)/sources/cxx-stl/gnu-libstdc++/4.6
+    CXX_STL = $(ANDROID_NDK_HOME)/sources/cxx-stl/gnu-libstdc++/4.9
     
     CC  = $(TOOLCHAINS)/bin/mipsel-linux-android-gcc
     LD  = $(TOOLCHAINS)/bin/mipsel-linux-android-ld
@@ -75,9 +107,9 @@ else ifeq (mips, $(findstring mips, $(ANDABI)))
 
 else ifeq (i686, $(findstring i686, $(ANDABI)))
 
-    TOOLCHAINS = $(ANDROID_NDK_HOME)/toolchains/x86-4.6/prebuilt/linux-x86_64
+    TOOLCHAINS = $(ANDROID_NDK_HOME)/toolchains/x86-4.9/prebuilt/linux-x86_64
     PLATFORM = $(ANDROID_NDK_HOME)/platforms/android-9/arch-x86
-    CXX_STL = $(ANDROID_NDK_HOME)/sources/cxx-stl/gnu-libstdc++/4.6
+    CXX_STL = $(ANDROID_NDK_HOME)/sources/cxx-stl/gnu-libstdc++/4.9
     
     CC  = $(TOOLCHAINS)/bin/i686-linux-android-gcc
     LD  = $(TOOLCHAINS)/bin/i686-linux-android-ld
@@ -91,6 +123,25 @@ else ifeq (i686, $(findstring i686, $(ANDABI)))
     CFLAGS   += -fsigned-char -I$(PLATFORM)/usr/include 
     CXXFLAGS := $(CFLAGS) -I $(CXX_STL)/include -I $(CXX_STL)/libs/x86/include -I $(CXX_STL)/x86-fexceptions -frtti
     LDFLAGS  := --sysroot=$(PLATFORM) -L$(PLATFORM)/usr/lib -llog -lc $(CXX_STL)/libs/x86/libgnustl_static.a
+    
+else ifeq (x86_64, $(findstring x86_64, $(ANDABI)))
+
+    TOOLCHAINS = $(ANDROID_NDK_HOME)/toolchains/x86_64-4.9/prebuilt/linux-x86_64
+    PLATFORM = $(ANDROID_NDK_HOME)/platforms/android-21/arch-x86_64
+    CXX_STL = $(ANDROID_NDK_HOME)/sources/cxx-stl/gnu-libstdc++/4.9
+    
+    CC  = $(TOOLCHAINS)/bin/x86_64-linux-android-gcc
+    LD  = $(TOOLCHAINS)/bin/x86_64-linux-android-ld
+    CPP = $(TOOLCHAINS)/bin/x86_64-linux-android-cpp
+    CXX = $(TOOLCHAINS)/bin/x86_64-linux-android-g++
+    AR  = $(TOOLCHAINS)/bin/x86_64-linux-android-ar
+    AS  = $(TOOLCHAINS)/bin/x86_64-linux-android-as
+    NM  = $(TOOLCHAINS)/bin/x86_64-linux-android-nm
+    STRIP = $(TOOLCHAINS)/bin/x86_64-linux-android-strip
+
+    CFLAGS   += -fsigned-char -I$(PLATFORM)/usr/include 
+    CXXFLAGS := $(CFLAGS) -I $(CXX_STL)/include -I $(CXX_STL)/libs/x86_64/include -I $(CXX_STL)/x86_64-fexceptions -frtti
+    LDFLAGS  := --sysroot=$(PLATFORM) -L$(PLATFORM)/usr/lib64 -llog -lc $(CXX_STL)/libs/x86_64/libgnustl_static.a
 
 endif
 
