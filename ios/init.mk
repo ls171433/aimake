@@ -17,8 +17,8 @@
 DEVROOT_DEV = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer
 DEVROOT_SIM = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer
 
-SDKROOT_DEV = $(DEVROOT_DEV)/SDKs/iPhoneOS8.2.sdk
-SDKROOT_SIM = $(DEVROOT_SIM)/SDKs/iPhoneSimulator8.2.sdk
+SDKROOT_DEV = $(DEVROOT_DEV)/SDKs/iPhoneOS.sdk
+SDKROOT_SIM = $(DEVROOT_SIM)/SDKs/iPhoneSimulator.sdk
 
 
 #
