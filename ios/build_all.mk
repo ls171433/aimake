@@ -90,7 +90,9 @@ $(SHARED_LIBRARY_X86_64) : $(OBJECTS_X86_64)
 
 $(STATIC_LIBRARY) : $(STATIC_LIBRARY_ARMV7) $(STATIC_LIBRARY_ARMV7S) $(STATIC_LIBRARY_ARMV8) $(STATIC_LIBRARY_I386) $(STATIC_LIBRARY_X86_64)
 	xcrun -sdk iphoneos lipo -output $@ -create -arch armv7 $(STATIC_LIBRARY_ARMV7) -arch armv7s $(STATIC_LIBRARY_ARMV7S) -arch arm64 $(STATIC_LIBRARY_ARMV8) -arch i386 $(STATIC_LIBRARY_I386) -arch x86_64 $(STATIC_LIBRARY_X86_64)
-
+	xcrun -sdk iphoneos lipo -output lib$(LOCAL_MODULE)_iphoneos.a -create -arch armv7 $(STATIC_LIBRARY_ARMV7) -arch armv7s $(STATIC_LIBRARY_ARMV7S) -arch arm64 $(STATIC_LIBRARY_ARMV8)
+	xcrun -sdk iphoneos lipo -output lib$(LOCAL_MODULE)_iphonesimulator.a -create -arch i386 $(STATIC_LIBRARY_I386) -arch x86_64 $(STATIC_LIBRARY_X86_64)
+	
 $(STATIC_LIBRARY_ARMV7) : $(OBJECTS_ARMV7)
 	$(AIMAKE_HOME)/$(TARGET_PLATFORM)/rlipo.sh armv7 $(LOCAL_PATH)/.rlipo.armv7 $(LOCAL_LDFLAGS) >/dev/null
 	$(AR_DEV) crv $@ $^ `find $(LOCAL_PATH)/.rlipo.armv7 -type f -regex .*\.o 2>/dev/null | xargs`
