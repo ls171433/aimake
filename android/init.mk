@@ -19,6 +19,7 @@ else ifeq ($(ANDABI), armv7a-neon)
 else ifeq ($(ANDABI), aarch64)
     CFLAGS := -march=armv8-a
 else ifeq ($(ANDABI), mips)
+else ifeq ($(ANDABI), mips64)
 else ifeq ($(ANDABI), i686)
     CFLAGS :=  -march=atom -mtune=atom -msse3
 else ifeq ($(ANDABI), x86_64)
@@ -85,7 +86,26 @@ else ifeq (aarch64, $(findstring aarch64, $(ANDABI)))
     CXXFLAGS := $(CFLAGS) -I $(CXX_STL)/include -I $(CXX_STL)/libs/arm64-v8a/include -I $(CXX_STL)/arm64-v8a-fexceptions -frtti
     #-Wl,--fix-cortex-a8 -Wl,-z,nocopyreloc -Wl,--no-undefined -Wl,-z,noexecstack -Wl,--gc-sections 
     LDFLAGS := --sysroot=$(PLATFORM) -L$(PLATFORM)/usr/lib -llog -lc $(CXX_STL)/libs/arm64-v8a/libgnustl_static.a
+	
+else ifeq (mips64, $(findstring mips64, $(ANDABI)))
 
+    TOOLCHAINS = $(ANDROID_NDK_HOME)/toolchains/mips64el-linux-android-4.9/prebuilt/linux-x86_64
+    PLATFORM = $(ANDROID_NDK_HOME)/platforms/android-21/arch-mips64
+    CXX_STL = $(ANDROID_NDK_HOME)/sources/cxx-stl/gnu-libstdc++/4.9
+    
+    CC  = $(TOOLCHAINS)/bin/mips64el-linux-android-gcc
+    LD  = $(TOOLCHAINS)/bin/mips64el-linux-android-ld
+    CPP = $(TOOLCHAINS)/bin/mips64el-linux-android-cpp
+    CXX = $(TOOLCHAINS)/bin/mips64el-linux-android-g++
+    AR  = $(TOOLCHAINS)/bin/mips64el-linux-android-ar
+    AS  = $(TOOLCHAINS)/bin/mips64el-linux-android-as
+    NM  = $(TOOLCHAINS)/bin/mips64el-linux-android-nm
+    STRIP = $(TOOLCHAINS)/bin/mips64el-linux-android-strip
+
+    CFLAGS   += -fsigned-char -I$(PLATFORM)/usr/include 
+    CXXFLAGS := $(CFLAGS) -I $(CXX_STL)/include -I $(CXX_STL)/libs/mips64/include -I $(CXX_STL)/mips64-fexceptions -frtti
+    LDFLAGS  := --sysroot=$(PLATFORM) -L$(PLATFORM)/usr/lib64 -llog -lc $(CXX_STL)/libs/mips64/libgnustl_static.a
+	
 else ifeq (mips, $(findstring mips, $(ANDABI)))
 
     TOOLCHAINS = $(ANDROID_NDK_HOME)/toolchains/mipsel-linux-android-4.9/prebuilt/linux-x86_64
