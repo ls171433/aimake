@@ -70,7 +70,7 @@ NM_SIM      = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault
 #CXXCPP_SIM  = $(DEVROOT_SIM)/usr/bin/cpp
 RANLIB_SIM  = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib #$(DEVROOT_SIM)/usr/bin/ranlib
 
-CFLAGS_SIM  := -no-cpp-precomp -isysroot $(SDKROOT_SIM) -I$(SDKROOT_SIM)/usr/include  -D__IPHONE_OS__
+CFLAGS_SIM  := -no-cpp-precomp -isysroot $(SDKROOT_SIM) -I$(SDKROOT_SIM)/usr/include  -D__IPHONE_OS__ -miphoneos-version-min=4.0 -fembed-bitcode-marker
 LDFLAGS_SIM := -L$(SDKROOT_SIM)/usr/lib -lstdc++
 
 CFLAGS_I386   := -arch i386 $(CFLAGS_SIM)
