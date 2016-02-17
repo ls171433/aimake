@@ -21,21 +21,69 @@ AIMAKE_ios_RES="${AIMAKE_PLATFOTM_RES} auto.sh rlipo.sh"
 AIMAKE_linux_RES=${AIMAKE_PLATFOTM_RES}
 AIMAKE_mingw_RES=${AIMAKE_PLATFOTM_RES}
 
-echo ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${AIMAKE_SH} ${BIN_DIR}/${AIMAKE_SH}
-${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${AIMAKE_SH} ${BIN_DIR}/${AIMAKE_SH}
-
-for FILE in ${AIMAKE_RES}
+while getopts 'ciu' OPT
 do
-    echo ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${FILE} ${BIN_DIR}/${FILE}
-    ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${FILE} ${BIN_DIR}/${FILE}
+    case ${OPT} in
+    c)
+        OPERATION=check
+    ;;
+    i)
+        OPERATION=install
+    ;;
+    u)
+        OPERATION=uninstall
+    ;;
+    *)
+    ;;
+    esac
 done
 
-for PLATFORM in ${AIMAKE_PLATFOTMS}
-do
-    PLATFOTM_RES=$(echo AIMAKE_${PLATFORM}_RES)
-    for FILE in $(eval echo \$${PLATFOTM_RES})
+if [ "${OPERATION}" = '' ]
+then
+    OPERATION=install
+fi
+
+case ${OPERATION} in
+install)
+    echo ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${AIMAKE_SH} ${BIN_DIR}/${AIMAKE_SH}
+    ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${AIMAKE_SH} ${BIN_DIR}/${AIMAKE_SH}
+
+    for FILE in ${AIMAKE_RES}
     do
-        echo ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${PLATFORM}/${FILE} ${BIN_DIR}/${PLATFORM}/${FILE}
-        ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${PLATFORM}/${FILE} ${BIN_DIR}/${PLATFORM}/${FILE}
+        echo ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${FILE} ${BIN_DIR}/${FILE}
+        ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${FILE} ${BIN_DIR}/${FILE}
     done
-done
+
+    for PLATFORM in ${AIMAKE_PLATFOTMS}
+    do
+        PLATFOTM_RES=$(echo AIMAKE_${PLATFORM}_RES)
+        for FILE in $(eval echo \$${PLATFOTM_RES})
+        do
+            echo ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${PLATFORM}/${FILE} ${BIN_DIR}/${PLATFORM}/${FILE}
+            ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${PLATFORM}/${FILE} ${BIN_DIR}/${PLATFORM}/${FILE}
+        done
+    done
+;;
+uninstall)
+    echo ${RM} ${RM_FLAGS} ${BIN_DIR}/${AIMAKE_SH}
+    ${RM} ${RM_FLAGS} ${BIN_DIR}/${AIMAKE_SH}
+
+    for FILE in ${AIMAKE_RES}
+    do
+        echo ${RM} ${RM_FLAGS} ${BIN_DIR}/${FILE}
+        ${RM} ${RM_FLAGS} ${BIN_DIR}/${FILE}
+    done
+
+    for PLATFORM in ${AIMAKE_PLATFOTMS}
+    do
+        PLATFOTM_RES=$(echo AIMAKE_${PLATFORM}_RES)
+        for FILE in $(eval echo \$${PLATFOTM_RES})
+        do
+            echo ${RM} ${RM_FLAGS} ${BIN_DIR}/${PLATFORM}/${FILE}
+            ${RM} ${RM_FLAGS} ${BIN_DIR}/${PLATFORM}/${FILE}
+        done
+    done
+;;
+*)
+;;
+esac
