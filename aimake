@@ -20,7 +20,7 @@ target_platform=$host_platform
 timestamp=`date +20%y%m%d%H%M%S`
 jobs=1
 
-while getopts "j:t:f:h" opt; do
+while getopts "j:t:f:h?" opt; do
     case $opt in
         j) jobs=$OPTARG;;
         f) aimakefile=$OPTARG;;
@@ -31,6 +31,7 @@ while getopts "j:t:f:h" opt; do
              echo "    -j number of jobs to run simultaneously"
              echo "    -t target platform, support '$supported_platforms', the default is '$host_platform'"
              echo "    -f aimakefile, the default is 'aimakefile'"
+             exit 0
     esac
 done
 
