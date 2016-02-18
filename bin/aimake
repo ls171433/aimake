@@ -13,6 +13,8 @@ else
     aimake_home=`readlink -f $0 | sed 's/\/[^\/]*$//'`;
 fi; 
 
+source /etc/aimakerc
+
 supported_platforms=`ls -l $aimake_home | awk '/^d/{printf("%s%s", sp, $NF); sp=" ";}'`
 
 aimakefile="aimakefile"
