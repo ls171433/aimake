@@ -33,11 +33,11 @@ $(STATIC_LIBRARY) : $(OBJECTS)
 #   dlltool -d $(LOCAL_MODULE).def --dllname $(LOCAL_MODULE).dll --output-lib $(LOCAL_MODULE).lib --kill-at
 #
 $(SHARED_LIBRARY) : $(OBJECTS)
-	$(CXX) $^ $(LDFLAGS) $(LOCAL_LDFLAGS) -Wl,--kill-at -Wl,--output-def,$(LOCAL_MODULE).def -o $(LOCAL_MODULE).dll
+	$(CXX) $^ $(LDFLAGS) $(LOCAL_LDFLAGS) -Wl,--kill-at -Wl,--output-def,$(LOCAL_MODULE).def,--out-implib,$(LOCAL_MODULE).lib -o $(LOCAL_MODULE).dll
 	$(STRIP) --strip-unneeded $@
 	sed -i 's/[^ \t]* = //g' $(LOCAL_MODULE).def
-	if [[ $(MINGWABI) == "x86_64" ]]; then lib /machine:x64 /def:$(LOCAL_MODULE).def /name:$(LOCAL_DLLNAME) /out:$(LOCAL_MODULE).lib; fi
-	if [[ $(MINGWABI) == "i686" ]]; then lib /machine:x86 /def:$(LOCAL_MODULE).def /name:$(LOCAL_DLLNAME) /out:$(LOCAL_MODULE).lib; fi
+	#if [[ $(MINGWABI) == "x86_64" ]]; then lib /machine:x64 /def:$(LOCAL_MODULE).def /name:$(LOCAL_DLLNAME) /out:$(LOCAL_MODULE).lib; fi
+	#if [[ $(MINGWABI) == "i686" ]]; then lib /machine:x86 /def:$(LOCAL_MODULE).def /name:$(LOCAL_DLLNAME) /out:$(LOCAL_MODULE).lib; fi
 
 #
 # goal: clean

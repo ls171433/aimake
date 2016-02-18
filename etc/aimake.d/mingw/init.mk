@@ -1,3 +1,9 @@
+TOOLCHAIN_DIR=/opt/bin
+TOOLCHAIN_PREFIX=i686-w64-mingw32-
+
+CC=gcc
+LD=ld
+
 MINGWABI=i686
 
 $(warning build for MINGWABI: $(MINGWABI))
@@ -11,11 +17,11 @@ ifeq ($(MINGWABI), i686)
     LD  = $(TOOLCHAINS)/bin/i686-w64-mingw32-ld
     CPP = $(TOOLCHAINS)/bin/i686-w64-mingw32-cpp
     CXX = $(TOOLCHAINS)/bin/i686-w64-mingw32-g++
-    AR  = $(TOOLCHAINS)/bin/ar
-    AS  = $(TOOLCHAINS)/bin/as
+    AR  = $(TOOLCHAINS)/bin/i686-w64-mingw32-ar
+    AS  = $(TOOLCHAINS)/bin/i686-w64-mingw32-as
     NM  = $(TOOLCHAINS)/bin/i686-w64-mingw32-gcc-nm
-    STRIP = $(TOOLCHAINS)/bin/strip
-    WINDRES = $(TOOLCHAINS)/bin/windres
+    STRIP = $(TOOLCHAINS)/bin/i686-w64-mingw32-strip
+    WINDRES = $(TOOLCHAINS)/bin/i686-w64-mingw32-windres
 
     CFLAGS = -I $(TOOLCHAINS)/i686-w64-mingw32/include
 
@@ -39,7 +45,7 @@ else
     $(error only support MINGWABI: i686, x86_64)
 endif
 
-CFLAGS   += -D WIN32 #-fPIC -pipe
+CFLAGS   += -D __WIN32__ -DWIN32 #-fPIC -pipe
 CXXFLAGS += $(CFLAGS)
 LDFLAGS += -static-libgcc -static-libstdc++ 
 

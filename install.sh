@@ -1,25 +1,36 @@
 #! /bin/sh
 
 INSTALL=install
-INSTALL_FLAGS='-c -D'
+INSTALL_FLAGS='-c -D '
 
 RM=rm
-RM_FLAGS='-f'
+RM_FLAGS='-f '
 
-SRC_DIR=$(dirname $(which $0))
-BIN_DIR=/usr/local/bin
-ETC_DIR=/etc
+AIMAKE_D='aimake.d'
 
-AIMAKE_SH='aimake'
-AIMAKE_RES='main.mk'
-AIMAKE_PLATFOTMS='android darwin ios linux mingw'
-AIMAKE_PLATFOTM_RES='build_all.mk  build_executable.mk  build_shared_library.mk  build_static_library.mk  init.mk'
+SRC_PATH=$(dirname $(which $0))
+SRC_BIN_PATH=${SRC_PATH}/bin
+SRC_ETC_PATH=${SRC_PATH}/etc
+SRC_ETC_PATH=${SRC_PATH}/etc
+SRC_PLATFORM_PATH=${SRC_ETC_PATH}/${AIMAKE_D}
+
+TAR_PATH=/usr/local
+TAR_BIN_PATH=${TAR_PATH}/bin
+TAR_ETC_PATH=${TAR_PATH}/etc
+TAR_PLATFORM_PATH=${TAR_ETC_PATH}/${AIMAKE_D}
+
+AIMAKE='aimake '
+AIMAKE_ETC='aimakerc '
+AIMAKE_RES='main.mk '
+AIMAKE_PLATFOTM='android darwin ios linux mingw '
+AIMAKE_PLATFOTM_RES='build_all.mk  build_executable.mk  build_shared_library.mk  build_static_library.mk  init.mk '
 
 AIMAKE_android_RES=${AIMAKE_PLATFOTM_RES}
 AIMAKE_darwin_RES=${AIMAKE_PLATFOTM_RES}
-AIMAKE_ios_RES="${AIMAKE_PLATFOTM_RES} auto.sh rlipo.sh"
+AIMAKE_ios_RES=${AIMAKE_PLATFOTM_RES}
 AIMAKE_linux_RES=${AIMAKE_PLATFOTM_RES}
 AIMAKE_mingw_RES=${AIMAKE_PLATFOTM_RES}
+AIMAKE_ios_RES+='auto.sh rlipo.sh '
 
 while getopts 'ciu' OPT
 do
@@ -34,6 +45,7 @@ do
         OPERATION=uninstall
     ;;
     *)
+        exit 1
     ;;
     esac
 done
@@ -45,42 +57,42 @@ fi
 
 case ${OPERATION} in
 install)
-    echo ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${AIMAKE_SH} ${BIN_DIR}/${AIMAKE_SH}
-    ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${AIMAKE_SH} ${BIN_DIR}/${AIMAKE_SH}
+    echo ${INSTALL} ${INSTALL_FLAGS} ${SRC_BIN_PATH}/${AIMAKE} ${TAR_BIN_PATH}/${AIMAKE}
+    ${INSTALL} ${INSTALL_FLAGS} ${SRC_BIN_PATH}/${AIMAKE} ${TAR_BIN_PATH}/${AIMAKE}
 
     for FILE in ${AIMAKE_RES}
     do
-        echo ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${FILE} ${BIN_DIR}/${FILE}
-        ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${FILE} ${BIN_DIR}/${FILE}
+        echo ${INSTALL} ${INSTALL_FLAGS} ${SRC_ETC_PATH}/${FILE} ${TAR_ETC_PATH}/${FILE}
+        ${INSTALL} ${INSTALL_FLAGS} ${SRC_ETC_PATH}/${FILE} ${TAR_ETC_PATH}/${FILE}
     done
 
-    for PLATFORM in ${AIMAKE_PLATFOTMS}
+    for PLATFORM in ${AIMAKE_PLATFOTM}
     do
         PLATFOTM_RES=$(echo AIMAKE_${PLATFORM}_RES)
         for FILE in $(eval echo \$${PLATFOTM_RES})
         do
-            echo ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${PLATFORM}/${FILE} ${BIN_DIR}/${PLATFORM}/${FILE}
-            ${INSTALL} ${INSTALL_FLAGS} ${SRC_DIR}/${PLATFORM}/${FILE} ${BIN_DIR}/${PLATFORM}/${FILE}
+            echo ${INSTALL} ${INSTALL_FLAGS} ${SRC_PLATFORM_PATH}/${PLATFORM}/${FILE} ${TAR_PLATFORM_PATH}/${PLATFORM}/${FILE}
+            ${INSTALL} ${INSTALL_FLAGS} ${SRC_PLATFORM_PATH}/${PLATFORM}/${FILE} ${TAR_PLATFORM_PATH}/${PLATFORM}/${FILE}
         done
     done
 ;;
 uninstall)
-    echo ${RM} ${RM_FLAGS} ${BIN_DIR}/${AIMAKE_SH}
-    ${RM} ${RM_FLAGS} ${BIN_DIR}/${AIMAKE_SH}
+    echo ${RM} ${RM_FLAGS} ${TAR_BIN_PATH}/${AIMAKE_SH}
+    ${RM} ${RM_FLAGS} ${TAR_BIN_PATH}/${AIMAKE_SH}
 
     for FILE in ${AIMAKE_RES}
     do
-        echo ${RM} ${RM_FLAGS} ${BIN_DIR}/${FILE}
-        ${RM} ${RM_FLAGS} ${BIN_DIR}/${FILE}
+        echo ${RM} ${RM_FLAGS} ${TAR_ETC_PATH}/${FILE}
+        ${RM} ${RM_FLAGS} ${TAR_ETC_PATH}/${FILE}
     done
 
-    for PLATFORM in ${AIMAKE_PLATFOTMS}
+    for PLATFORM in ${AIMAKE_PLATFOTM}
     do
         PLATFOTM_RES=$(echo AIMAKE_${PLATFORM}_RES)
         for FILE in $(eval echo \$${PLATFOTM_RES})
         do
-            echo ${RM} ${RM_FLAGS} ${BIN_DIR}/${PLATFORM}/${FILE}
-            ${RM} ${RM_FLAGS} ${BIN_DIR}/${PLATFORM}/${FILE}
+            echo ${RM} ${RM_FLAGS} ${TAR_PLATFORM_PATH}/${PLATFORM}/${FILE}
+            ${RM} ${RM_FLAGS} ${TAR_PLATFORM_PATH}/${PLATFORM}/${FILE}
         done
     done
 ;;
