@@ -11,17 +11,18 @@ $(shell sleep 1)
 
 ifeq ($(MINGWABI), i686)
 
-    TOOLCHAINS = /mingw32
+    TOOLCHAINS = /opt/bin
+    PREFIX=i686-w64-mingw32-
 
-    CC  = $(TOOLCHAINS)/bin/i686-w64-mingw32-gcc
-    LD  = $(TOOLCHAINS)/bin/i686-w64-mingw32-ld
-    CPP = $(TOOLCHAINS)/bin/i686-w64-mingw32-cpp
-    CXX = $(TOOLCHAINS)/bin/i686-w64-mingw32-g++
-    AR  = $(TOOLCHAINS)/bin/i686-w64-mingw32-ar
-    AS  = $(TOOLCHAINS)/bin/i686-w64-mingw32-as
-    NM  = $(TOOLCHAINS)/bin/i686-w64-mingw32-gcc-nm
-    STRIP = $(TOOLCHAINS)/bin/i686-w64-mingw32-strip
-    WINDRES = $(TOOLCHAINS)/bin/i686-w64-mingw32-windres
+    CC  = $(TOOLCHAINS)/$(PREFIX)gcc
+    LD  = $(TOOLCHAINS)/$(PREFIX)ld
+    CPP = $(TOOLCHAINS)/$(PREFIX)cpp
+    CXX = $(TOOLCHAINS)/$(PREFIX)g++
+    AR  = $(TOOLCHAINS)/$(PREFIX)ar
+    AS  = $(TOOLCHAINS)/$(PREFIX)as
+    NM  = $(TOOLCHAINS)/$(PREFIX)gcc-nm
+    STRIP = $(TOOLCHAINS)/$(PREFIX)strip
+    WINDRES = $(TOOLCHAINS)/$(PREFIX)windres
 
     CFLAGS = -I $(TOOLCHAINS)/i686-w64-mingw32/include
 
