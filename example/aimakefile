@@ -4,8 +4,8 @@
 # then you can compile your project into executable, static libarary or shared library for specific platform, e.g. ios, android, linux, darwin
 #
 
-#LOCAL_SRC_DIRS          := foo
-#LOCAL_SRC_DIRS_EXCULDE  := foo/foo2
+LOCAL_SRC_DIRS           := bar
+LOCAL_SRC_DIRS_EXCULDE   := bar/bar2
 LOCAL_SRC_FILES          := foo.c func.cpp
 #LOCAL_SRC_FILES_EXCLUDE := func.cpp
 
