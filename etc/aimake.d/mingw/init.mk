@@ -3,7 +3,7 @@ TOOLCHAIN_PREFIX=i686-w64-mingw32-
 
 MINGWABI=$(shell uname -m)
 
-$(warning build for MINGWABI: $(MINGWABI))
+@echo warning build for MINGWABI: $(MINGWABI)
 $(shell sleep 1)
 
 ifeq ($(MINGWABI), i686)
